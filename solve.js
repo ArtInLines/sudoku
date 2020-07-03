@@ -213,5 +213,5 @@ function boxesGood(board) {
 
 //               //
 // <-- TESTS --> //
-console.log(solve(board1));
+console.log(solve(board2));
 //               //
