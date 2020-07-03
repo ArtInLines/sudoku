@@ -8,8 +8,8 @@ const empty = null;
 //               //
 // <-- TESTS --> //
 //               //
-// Many possible solutions
-const board0 = [
+// Too many solutions
+/* const board0 = [
 	[1, 2, 3, empty, empty, empty, empty, empty, empty],
 	[empty, empty, empty, empty, empty, empty, empty, empty, 4],
 	[empty, empty, empty, empty, empty, empty, empty, empty, 5],
@@ -19,8 +19,9 @@ const board0 = [
 	[empty, empty, empty, empty, empty, empty, empty, empty, empty],
 	[empty, empty, empty, empty, empty, empty, empty, empty, empty],
 	[empty, empty, empty, empty, empty, empty, empty, empty, 9],
-];
+]; */
 
+// Many solutions
 const board1 = [
 	[5, empty, empty, empty, 7, empty, empty, empty, empty],
 	[6, empty, empty, 1, 9, 5, empty, empty, empty],
@@ -60,6 +61,13 @@ const board3 = [
 ];
 
 let solutions = [];
+
+function main(board) {
+	solve(board);
+	const results = solutions;
+	solutions = [];
+	return results;
+}
 
 function solve(board) {
 	if (solved(board)) {
@@ -228,5 +236,4 @@ function boxesGood(board) {
 // ##      ## //
 // ## TEST ## //
 // ##      ## //
-// solve(board0);
-// console.log('Final length:', solutions.length);
+// console.log(main(board1));
