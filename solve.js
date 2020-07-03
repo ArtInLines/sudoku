@@ -21,7 +21,7 @@ const empty = null;
 	[empty, empty, empty, empty, empty, empty, empty, empty, 9],
 ]; */
 
-// Many solutions
+// Many solutions (46 solutions to be precise)
 const board1 = [
 	[5, empty, empty, empty, 7, empty, empty, empty, empty],
 	[6, empty, empty, 1, 9, 5, empty, empty, empty],
