@@ -8,19 +8,6 @@ const empty = null;
 //               //
 // <-- TESTS --> //
 //               //
-// Too many solutions
-/* const board0 = [
-	[1, 2, 3, empty, empty, empty, empty, empty, empty],
-	[empty, empty, empty, empty, empty, empty, empty, empty, 4],
-	[empty, empty, empty, empty, empty, empty, empty, empty, 5],
-	[empty, empty, empty, empty, empty, empty, empty, empty, empty],
-	[empty, empty, empty, empty, 8, empty, empty, empty, empty],
-	[empty, empty, empty, empty, empty, empty, empty, empty, empty],
-	[empty, empty, empty, empty, empty, empty, empty, empty, empty],
-	[empty, empty, empty, empty, empty, empty, empty, empty, empty],
-	[empty, empty, empty, empty, empty, empty, empty, empty, 9],
-]; */
-
 // Many solutions (46 solutions to be precise)
 const board1 = [
 	[5, empty, empty, empty, 7, empty, empty, empty, empty],
@@ -239,3 +226,6 @@ function boxesGood(board) {
 // ## TEST ## //
 // ##      ## //
 // console.log(main(board1).length);
+
+// Export statement doesn't work
+export default main;
