@@ -72,7 +72,9 @@ function main(board) {
 function solve(board) {
 	if (solved(board)) {
 		solutions.push(board);
-		console.log(board, solutions.length);
+	}
+	if (solutions.length >= 10) {
+		return;
 	}
 	const possibilities = nextBoards(board);
 	const validBoards = keepOnlyValid(possibilities);
@@ -236,4 +238,4 @@ function boxesGood(board) {
 // ##      ## //
 // ## TEST ## //
 // ##      ## //
-// console.log(main(board1));
+// console.log(main(board1).length);
