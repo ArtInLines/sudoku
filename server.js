@@ -13,9 +13,13 @@ const app = express();
 const PORT = process.env.PORT;
 const NODE_ENV = process.env.NODE_ENV;
 const publicPath = `${__dirname}/public`;
+const stylesPath = `${publicPath}/assets/styles`;
+const scriptsPath = `${publicPath}/assets/scripts`;
 
 // Configurations
 app.use('/assets', express.static(`${publicPath}/assets`));
+app.use('/styles', express.static(`${stylesPath}`));
+app.use('/scripts', express.static(`${scriptsPath}`));
 app.use(express.json());
 
 // DB connection and model
