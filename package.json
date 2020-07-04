@@ -1,0 +1,30 @@
+{
+	"name": "sudoku",
+	"version": "1.0.0",
+	"description": "Website to create and solve sudokus",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js",
+		"dev": "nodemon server.js"
+	},
+	"type": "commonjs",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ArtInLines/sudoku.git"
+	},
+	"author": "ArtInLines",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/ArtInLines/sudoku/issues"
+	},
+	"homepage": "https://github.com/ArtInLines/sudoku#readme",
+	"dependencies": {
+		"colors": "^1.4.0",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"mongoose": "^5.9.21"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.4"
+	}
+}

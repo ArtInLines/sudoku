@@ -1,6 +1,7 @@
 // Import statement doesn't work
-import main from 'solve.js';
+import main from './solve.mjs';
 
+const empty = null;
 const board = [
 	[5, 3, empty, empty, 7, empty, empty, empty, empty],
 	[6, empty, empty, 1, 9, 5, empty, empty, empty],
