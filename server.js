@@ -30,11 +30,19 @@ app.get('/', (req, res) => {
 		// Send back json data with new sudokus, to create endless scrolling on client side
 	})
 	.get('/create', async (req, res) => {
+		let board = [];
+		for (let i = 0; i < 9; i++) {
+			let;
+		}
+		const sudoku = await sudokuModel.create({ sudoku: board });
 		// Create new sudokuModel in DB with all values set to empty
 		// Redirect to /:sudokuId
 	})
-	.get('/:sudokuId', async (req, res) => {
+	.get('/find/:sudokuId', async (req, res) => {
 		// Get sudoku from req.params.sudokuId
+		// Send sudoku as json
+	})
+	.get('/:sudokuId', async (req, res) => {
 		// Send file, that doesn't allow you to edit the sudoku
 	})
 	.get('/:sudokuId/edit', async (req, res) => {
