@@ -8,14 +8,13 @@ let validSudokus = JSON.parse(boardFile).sudokus;
 
 function create(limit) {
 	for (let i = 1; i < limit; i++) {
-		console.log(i);
 		changeBoard();
 		if (i % 500 === 0 && i != 0) {
 			storeResult();
 		}
 		if (!checkForEmptyFields()) continue;
 		const solutions = solve(board);
-		// console.log('solutions:', solutions.length);
+		console.log(i, solutions.length);
 		if (solutions.length == 0 || solutions.length > 1) {
 			continue;
 		} else {
@@ -118,8 +117,10 @@ function colGood(row, col) {
 
 // Execute Code //
 const startDate = Date.now();
-create(50000);
-console.log(Date.now() - startDate + 'ms');
+const amount = 50000;
+create(amount);
+const timeDiff = Date.now() - startDate;
+console.log(`${timeDiff}ms \n${timeDiff / amount}ms per iteration \n${validSudokus.sudoku.length} found valid sudokus`);
 
 //
 //
