@@ -9,23 +9,28 @@ const empty = 0;
 let solutions = [];
 let limit = 2;
 
-function main(board /* max */) {
-	//limit = max;
+function main(board) {
+	// console.log('Solving...');
 	solve(board);
 	const results = solutions;
+	// console.log('Results:', results.length);
 	solutions = [];
 	return results;
 }
 
 function solve(board) {
+	// console.log('solve:', board);
 	if (solved(board)) {
 		solutions.push(board);
+		// console.log('Board solved!\n', solutions);
 	}
 	if (solutions.length >= limit) {
+		// console.log('solutions:', solutions.length);
 		return;
 	}
 	const possibilities = nextBoards(board);
 	const validBoards = keepOnlyValid(possibilities);
+	// console.log('validBoards:', validBoards);
 	return searchForSolution(validBoards);
 }
 
@@ -71,17 +76,17 @@ function solved(board) {
 
 function nextBoards(board) {
 	// generate next nine possibilities
-	let res = [];
-	const firstEmpty = findEmptySquare(board); // returns a (y, x) coordinate
+	let res = { y: 0, x: 0, boardsArray: [] };
+	const firstEmpty = findEmptySquare(board); // returns a [y, x] coordinate || y = row || x = col
 	if (firstEmpty != undefined) {
-		const y = firstEmpty[0];
-		const x = firstEmpty[1];
+		res.y = firstEmpty[0];
+		res.x = firstEmpty[1];
 		for (let i = 1; i <= 9; i++) {
-			let newBoard = [...board];
-			let row = [...newBoard[y]];
-			row[x] = i;
-			newBoard[y] = row;
-			res.push(newBoard);
+			let newBoard = [...board]; // Copy board
+			let row = [...newBoard[res.y]]; // Copy row
+			row[res.x] = i;
+			newBoard[res.y] = row;
+			res.boardsArray.push(newBoard);
 		}
 	}
 	return res;
@@ -100,87 +105,85 @@ function findEmptySquare(board) {
 }
 
 // Filtering function
-function keepOnlyValid(boards) {
-	const filteredBoards = boards.filter((board) => validBoards(board));
+function keepOnlyValid(res) {
+	const filteredBoards = [];
+	for (let i = 0; i < res.boardsArray.length; i++) {
+		// console.log('Checking if board is valid...');
+		const tempBoard = validBoards(res.boardsArray[i], res.y, res.x);
+		if (!tempBoard) continue;
+		filteredBoards.push(tempBoard);
+	}
+	// console.log(filteredBoards);
 	return filteredBoards;
 }
 
-function validBoards(board) {
-	return rowGood(board) && columnGood(board) && boxesGood(board);
+function validBoards(board, y, x) {
+	if (rowGood(board, y) && columnGood(board, y, x) && boxGood(board, y, x)) {
+		// console.log('Board is valid');
+		return board;
+	}
+	// console.log('Board is not valid');
+	return false;
 }
 
-function rowGood(board) {
+function rowGood(board, y) {
+	// console.log('Checking row...');
+	const row = [...board[y]];
 	for (let i = 0; i < 9; i++) {
-		let tempRow = [];
-		for (let j = 0; j < 9; j++) {
-			if (tempRow.includes(board[i][j])) {
-				// if it includes duplicates
+		if (row[i] == empty) continue;
+		for (let j = i + 1; j < 9 - i; j++) {
+			if (row[i] == row[j]) {
 				return false;
-			} else if (board[i][j] != empty) {
-				// if it's not a duplicate
-				// and isn't empty
-				tempRow.push(board[i][j]);
 			}
 		}
 	}
 	return true;
 }
 
-function columnGood(board) {
-	// Different to rowGood() by having the indexes switched
-	// so that it looks vertically, instead of horizontally
+function columnGood(board, y, x) {
+	// console.log('Checking Column...');
+	const changedSquare = board[y][x];
 	for (let i = 0; i < 9; i++) {
-		let tempRow = [];
-		for (let j = 0; j < 9; j++) {
-			if (tempRow.includes(board[j][i])) {
-				// if it includes duplicates
-				return false;
-			} else if (board[j][i] != empty) {
-				// if it's not a duplicate
-				// and isn't empty
-				tempRow.push(board[j][i]);
-			}
+		if (i == y) continue;
+		// Don't need to check for empty fields, cause board[y][x] can't be empty
+		if (board[i][x] == board[y][x]) {
+			// console.log('Column is not ok');
+			return false;
 		}
 	}
+	// console.log('Column is ok');
 	return true;
 }
 
-function boxesGood(board) {
-	// Coordinates of the first box
-	const boxCoordinates = [
-		[0, 0],
-		[0, 1],
-		[0, 2],
-		[1, 0],
-		[1, 1],
-		[1, 2],
-		[2, 0],
-		[2, 1],
-		[2, 2],
-	];
-
-	for (let y = 0; y < 9; y += 3) {
-		// Check first the highest boxes
-		// Move 3 squares / 1 box down afterwards
-		for (let x = 0; x < 9; x += 3) {
-			// Same as outer loop
-			// just moving 3 squares / 1 box horrizontally
-			let temp = [];
-			for (let i = 0; i < 9; i++) {
-				let coordinates = [...boxCoordinates[i]];
-				coordinates[0] += y;
-				coordinates[1] += x;
-				const currentSquare = board[coordinates[0]][coordinates[1]];
-				// Check for duplicates in the box
-				if (temp.includes(currentSquare)) {
-					return false;
-				} else if (currentSquare != empty) {
-					temp.push(currentSquare);
-				}
-			}
+function boxGood(board, y, x) {
+	// y / x divided by 3 is either <1, <2 or <3
+	// Math.floor of that result gives either 0, 1 or 2
+	// Two loops inside one another:
+	// One loops sideways 3 times 	- row	- row = 0 + ( 3 * Math.floor(y / 3) )
+	// One loops downwards 3 times  - col	- col = 0 + ( 3 * Math.floor(x / 3) )
+	// board[row][col] = current square
+	// if (row == y && col == x) continue
+	// if (board[row][col] == board[y][x]) return false
+	// console.log('Checking box');
+	const currentSquare = board[y][x];
+	const rowStart = calcBoxStartingVal(y);
+	const colStart = calcBoxStartingVal(x);
+	for (let row = rowStart; row < rowStart + 3; row++) {
+		for (let col = colStart; col < colStart + 3; col++) {
+			// Don't need to check for empty squares, cause currentSquare can't be empty
+			if (row == y && col == x) continue;
+			if (board[row][col] == currentSquare) return false;
 		}
 	}
+	// console.log('Box is ok');
 	return true;
+}
+
+function calcBoxStartingVal(value) {
+	value = value / 3;
+	value = Math.floor(value);
+	value = 3 * value;
+	return value;
 }
 
 // ##      ## //
