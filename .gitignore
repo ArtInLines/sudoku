@@ -1,4 +1,4 @@
 node_modules/
 *.env
 .prettierignore
-create/board.json
+/create/board.*
