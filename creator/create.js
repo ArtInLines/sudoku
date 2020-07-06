@@ -118,7 +118,7 @@ function colGood(row, col) {
 
 // Execute Code //
 const startDate = Date.now();
-const amount = 100000;
+const amount = 100000000;
 create(amount);
 const timeDiff = Date.now() - startDate;
 console.log(`${timeDiff}ms \n${timeDiff / amount}ms per iteration`);
