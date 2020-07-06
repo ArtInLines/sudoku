@@ -21,7 +21,8 @@ function create(limit) {
 			validSudokus.push({ sudoku: board, solution: solutions[0] });
 			storeResult();
 			console.log('\n\n\n  --  SUCCESS  --  \n\n\n');
-			return validSudokus;
+			console.log('\n\n\n  --  Valid Sudoku created  --  \n\n\n');
+			continue;
 		}
 	}
 	storeResult();
@@ -117,10 +118,11 @@ function colGood(row, col) {
 
 // Execute Code //
 const startDate = Date.now();
-const amount = 50000;
+const amount = 100000;
 create(amount);
 const timeDiff = Date.now() - startDate;
-console.log(`${timeDiff}ms \n${timeDiff / amount}ms per iteration \n${validSudokus.sudoku.length} found valid sudokus`);
+console.log(`${timeDiff}ms \n${timeDiff / amount}ms per iteration`);
+if (validSudokus.length != 0) console.log(`${validSudokus.sudoku.length} found valid sudokus`);
 
 //
 //
@@ -176,4 +178,17 @@ const testBoard3 = [
 	[0, 0, 0, 0, 0, 0, 0, 0, 7],
 	[0, 0, 0, 0, 0, 0, 0, 0, 8],
 	[0, 0, 0, 0, 0, 0, 0, 0, 9],
-]; */
+]; 
+
+const currentBoard = [
+		[3, 4, 5, 0, 7, 2, 1, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0]
+	],
+*/

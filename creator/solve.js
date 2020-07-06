@@ -10,7 +10,7 @@ let solutions = [];
 let limit = 2;
 
 function main(board) {
-	// console.log('Solving...');
+	console.log('Solving...');
 	solve(board);
 	const results = solutions;
 	// console.log('Results:', results.length);
@@ -21,6 +21,7 @@ function main(board) {
 function solve(board) {
 	// console.log('solve:', board);
 	if (solved(board)) {
+		// console.log(board);
 		solutions.push(board);
 		// console.log('Board solved!\n', solutions);
 	}
@@ -130,9 +131,11 @@ function rowGood(board, y) {
 	// console.log('Checking row...');
 	const row = [...board[y]];
 	for (let i = 0; i < 9; i++) {
-		if (row[i] == empty) continue;
-		for (let j = i + 1; j < 9 - i; j++) {
-			if (row[i] == row[j]) {
+		// console.log(i);
+		// if (row[i] == empty) continue;
+		for (let j = i + 1; j < 9; j++) {
+			// console.log('i:', row[i], 'j:', row[j]);
+			if (row[i] == row[j] && row[i] != 0) {
 				return false;
 			}
 		}
@@ -186,10 +189,45 @@ function calcBoxStartingVal(value) {
 	return value;
 }
 
+// Export statement doesn't work
+module.exports = main;
+
 // ##      ## //
 // ## TEST ## //
 // ##      ## //
-// console.log(main(board1).length);
-
-// Export statement doesn't work
-module.exports = main;
+// Many solutions (46 solutions to be precise)
+const testBoard1 = [
+	[5, 0, 0, 0, 7, 0, 0, 0, 0],
+	[6, 0, 0, 1, 9, 5, 0, 0, 0],
+	[0, 9, 8, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 3],
+	[4, 0, 0, 8, 0, 3, 0, 0, 1],
+	[7, 0, 0, 0, 2, 0, 0, 0, 0],
+	[0, 6, 0, 0, 0, 0, 2, 8, 0],
+	[0, 0, 0, 4, 1, 9, 0, 0, 5],
+	[0, 0, 0, 0, 8, 0, 0, 7, 9],
+];
+// One solution
+const testBoard2 = [
+	[5, 3, 0, 0, 7, 0, 0, 0, 0],
+	[6, 0, 0, 1, 9, 5, 0, 0, 0],
+	[0, 9, 8, 0, 0, 0, 0, 6, 0],
+	[8, 0, 0, 0, 6, 0, 0, 0, 3],
+	[4, 0, 0, 8, 0, 3, 0, 0, 1],
+	[7, 0, 0, 0, 2, 0, 0, 0, 6],
+	[0, 6, 0, 0, 0, 0, 2, 8, 0],
+	[0, 0, 0, 4, 1, 9, 0, 0, 5],
+	[0, 0, 0, 0, 8, 0, 0, 7, 9],
+];
+// Invalid board
+const testBoard3 = [
+	[1, 2, 3, 4, 5, 6, 7, 8, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 2],
+	[0, 0, 0, 0, 0, 0, 0, 0, 3],
+	[0, 0, 0, 0, 0, 0, 0, 0, 4],
+	[0, 0, 0, 0, 0, 0, 0, 0, 5],
+	[0, 0, 0, 0, 0, 0, 0, 0, 6],
+	[0, 0, 0, 0, 0, 0, 0, 0, 7],
+	[0, 0, 0, 0, 0, 0, 0, 0, 8],
+	[0, 0, 0, 0, 0, 0, 0, 0, 9],
+];
