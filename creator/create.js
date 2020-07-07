@@ -15,14 +15,12 @@ function create(limit, storingIntervall) {
 		if (!checkForEmptyFields()) continue;
 		// console.log(board);
 		const solutions = solve(board);
-		console.log(i, solutions.length);
 		if (solutions.length == 0 || solutions.length > 1) {
 			continue;
 		} else {
 			validSudokus.push({ sudoku: board, solution: solutions[0] });
 			storeResult();
-			console.log('\n\n\n  --  SUCCESS  --  \n\n\n');
-			console.log('\n\n\n  --  Valid Sudoku created  --  \n\n\n');
+			console.log('\n\n\n  --  SUCCESS  --\n  --  Valid Sudoku created  --  \n\n\n');
 			continue;
 		}
 	}
@@ -31,7 +29,7 @@ function create(limit, storingIntervall) {
 }
 
 function storeResult() {
-	console.log('\n\n  --  Storing board  --  \n\n');
+	console.log('Storing...');
 	const data = { currentBoard: board, sudokus: validSudokus };
 	fs.writeFileSync('./board.json', JSON.stringify(data), { encoding: 'utf-8' });
 }
@@ -142,7 +140,7 @@ function calcBoxStartingVal(value) {
 // Execute Code //
 const startDate = Date.now();
 const amount = 100000000;
-const storingIntervall = 1000;
+const storingIntervall = 5000;
 create(amount, storingIntervall);
 const timeDiff = Date.now() - startDate;
 console.log(`${timeDiff}ms \n${timeDiff / 60000}min`);
