@@ -10,8 +10,9 @@ let solutions = [];
 let limit = 2;
 
 function main(board) {
-	console.log('Solving...');
+	// console.log('Solving...');
 	solve(board);
+	// console.log('solved');
 	const results = solutions;
 	// console.log('Results:', results.length);
 	solutions = [];
@@ -21,7 +22,6 @@ function main(board) {
 function solve(board) {
 	// console.log('solve:', board);
 	if (solved(board)) {
-		// console.log(board);
 		solutions.push(board);
 		// console.log('Board solved!\n', solutions);
 	}
@@ -219,8 +219,20 @@ const testBoard2 = [
 	[0, 0, 0, 4, 1, 9, 0, 0, 5],
 	[0, 0, 0, 0, 8, 0, 0, 7, 9],
 ];
-// Invalid board
+// One solution
 const testBoard3 = [
+	[1, 0, 6, 0, 0, 2, 3, 0, 0],
+	[0, 5, 0, 0, 0, 6, 0, 9, 1],
+	[0, 0, 9, 5, 0, 1, 4, 6, 2],
+	[0, 3, 7, 9, 0, 5, 0, 0, 0],
+	[5, 8, 1, 0, 2, 7, 9, 0, 0],
+	[0, 0, 0, 4, 0, 8, 1, 5, 7],
+	[0, 0, 0, 2, 6, 0, 5, 4, 0],
+	[0, 0, 4, 1, 5, 0, 6, 0, 9],
+	[9, 0, 0, 8, 7, 4, 2, 1, 0],
+];
+// Invalid board
+const testBoard4 = [
 	[1, 2, 3, 4, 5, 6, 7, 8, 0],
 	[0, 0, 0, 0, 0, 0, 0, 0, 2],
 	[0, 0, 0, 0, 0, 0, 0, 0, 3],
@@ -231,3 +243,5 @@ const testBoard3 = [
 	[0, 0, 0, 0, 0, 0, 0, 0, 8],
 	[0, 0, 0, 0, 0, 0, 0, 0, 9],
 ];
+
+// console.log(main(testBoard3));

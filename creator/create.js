@@ -6,13 +6,14 @@ let boardFile = fs.readFileSync('./board.json', { encoding: 'utf-8' });
 let board = JSON.parse(boardFile).currentBoard;
 let validSudokus = JSON.parse(boardFile).sudokus;
 
-function create(limit) {
+function create(limit, storingIntervall) {
 	for (let i = 1; i < limit; i++) {
 		changeBoard();
-		if (i % 500 === 0 && i != 0) {
+		if (i % storingIntervall === 0 && i != 0) {
 			storeResult();
 		}
 		if (!checkForEmptyFields()) continue;
+		// console.log(board);
 		const solutions = solve(board);
 		console.log(i, solutions.length);
 		if (solutions.length == 0 || solutions.length > 1) {
@@ -73,7 +74,7 @@ function changeBoard() {
 			// Check if number is already in row or column
 			// If so, let loop continue
 			if (board[i][j] != 0) {
-				if (!rowGood(i, j) || !colGood(i, j)) {
+				if (!rowGood(i, j) || !colGood(i, j) || !boxGood(i, j)) {
 					// console.log('Row or Column not good');
 					added = false;
 					j--;
@@ -116,13 +117,36 @@ function colGood(row, col) {
 	return true;
 }
 
+function boxGood(y, x) {
+	const currentSquare = board[y][x];
+	const rowStart = calcBoxStartingVal(y);
+	const colStart = calcBoxStartingVal(x);
+	for (let row = rowStart; row < rowStart + 3; row++) {
+		for (let col = colStart; col < colStart + 3; col++) {
+			// Don't need to check for empty squares, cause currentSquare can't be empty
+			if (row == y && col == x) continue;
+			if (board[row][col] == currentSquare) return false;
+		}
+	}
+	// console.log('Box is ok');
+	return true;
+}
+
+function calcBoxStartingVal(value) {
+	value = value / 3;
+	value = Math.floor(value);
+	value = 3 * value;
+	return value;
+}
+
 // Execute Code //
 const startDate = Date.now();
 const amount = 100000000;
-create(amount);
+const storingIntervall = 1000;
+create(amount, storingIntervall);
 const timeDiff = Date.now() - startDate;
-console.log(`${timeDiff}ms \n${timeDiff / amount}ms per iteration`);
-if (validSudokus.length != 0) console.log(`${validSudokus.sudoku.length} found valid sudokus`);
+console.log(`${timeDiff}ms \n${timeDiff / 60000}min`);
+if (validSudokus.length != 0) console.log(`Found ${validSudokus.length} valid sudokus`);
 
 //
 //
@@ -181,7 +205,7 @@ const testBoard3 = [
 ]; 
 
 const currentBoard = [
-		[3, 4, 5, 0, 7, 2, 1, 0, 0],
+		[4, 0, 0, 0, 3, 6, 7, 8, 9],
 		[0, 0, 0, 0, 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0, 0, 0, 0, 0],
