@@ -10,7 +10,7 @@ function create(limit, storingIntervall) {
 	for (let i = 1; i < limit; i++) {
 		changeBoard();
 		if (i % storingIntervall === 0 && i != 0) {
-			storeResult();
+			storeResult(i);
 		}
 		if (!checkForEmptyFields()) continue;
 		// console.log(board);
@@ -24,12 +24,12 @@ function create(limit, storingIntervall) {
 			continue;
 		}
 	}
-	storeResult();
+	storeResult('\nDone');
 	return null;
 }
 
-function storeResult() {
-	console.log('Storing...');
+function storeResult(i) {
+	console.log('Storing...', i);
 	const data = { currentBoard: board, sudokus: validSudokus };
 	fs.writeFileSync('./board.json', JSON.stringify(data), { encoding: 'utf-8' });
 }
