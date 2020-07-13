@@ -143,7 +143,7 @@ const amount = 100000000;
 const storingIntervall = 5000;
 create(amount, storingIntervall);
 const timeDiff = Date.now() - startDate;
-console.log(`${timeDiff}ms \n${timeDiff / 60000}min`);
+console.log(`${timeDiff}ms \n${timeDiff / 600000}min \n${timeDiff / 360000}h`);
 if (validSudokus.length != 0) console.log(`Found ${validSudokus.length} valid sudokus`);
 
 //
