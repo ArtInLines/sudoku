@@ -36,7 +36,7 @@ function create(limit, storingIntervall) {
 }
 
 function storeResult(i) {
-	console.log(i / amount, '%');
+	console.log(i / amount * 100, '%');
 	const data = { currentBoard: board, sudokus: validSudokus };
 	fs.writeFileSync(filePath, JSON.stringify(data), { encoding: 'utf-8' });
 }
