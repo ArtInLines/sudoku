@@ -1,8 +1,14 @@
+// Changeable constants
+const amount = 100000000;
+const storingIntervall = 10000;
+const filePath = './board.json';
+const emptySquaresMin = 10;
+
+// Modules
 const solve = require('./solve.js');
 const fs = require('fs');
 
-const EMPTYSQUAREMAX = 10;
-let boardFile = fs.readFileSync('./board.json', { encoding: 'utf-8' });
+let boardFile = fs.readFileSync(filePath, { encoding: 'utf-8' });
 let board = JSON.parse(boardFile).currentBoard;
 let validSudokus = JSON.parse(boardFile).sudokus;
 
@@ -18,8 +24,9 @@ function create(limit, storingIntervall) {
 		if (solutions.length == 0 || solutions.length > 1) {
 			continue;
 		} else {
+			console.log(solutions[0]);
 			validSudokus.push({ sudoku: board, solution: solutions[0] });
-			storeResult();
+			storeResult(i);
 			console.log('\n\n\n  --  SUCCESS  --\n  --  Valid Sudoku created  --  \n\n\n');
 			continue;
 		}
@@ -29,9 +36,9 @@ function create(limit, storingIntervall) {
 }
 
 function storeResult(i) {
-	console.log('Storing...', i);
+	console.log(i / amount, '%');
 	const data = { currentBoard: board, sudokus: validSudokus };
-	fs.writeFileSync('./board.json', JSON.stringify(data), { encoding: 'utf-8' });
+	fs.writeFileSync(filePath, JSON.stringify(data), { encoding: 'utf-8' });
 }
 
 function checkForEmptyFields() {
@@ -41,7 +48,7 @@ function checkForEmptyFields() {
 			if (board[row][col] == 0) {
 				emptyFields++;
 			}
-			if (emptyFields == EMPTYSQUAREMAX) {
+			if (emptyFields == emptySquaresMin) {
 				// console.log('enough empty fields');
 				return true;
 			}
@@ -139,18 +146,11 @@ function calcBoxStartingVal(value) {
 
 // Execute Code //
 const startDate = Date.now();
-const amount = 100000000;
-const storingIntervall = 5000;
 create(amount, storingIntervall);
 const timeDiff = Date.now() - startDate;
-console.log(`${timeDiff}ms \n${timeDiff / 600000}min \n${timeDiff / 360000}h`);
+console.log(`${timeDiff}ms \n${timeDiff / 6000}min \n${timeDiff / 360000}h`);
 if (validSudokus.length != 0) console.log(`Found ${validSudokus.length} valid sudokus`);
 
-//
-//
-//
-//
-//
 /*
 function getCurrentValue() {
 	let currentVal = 0;
@@ -161,56 +161,4 @@ function getCurrentValue() {
 	}
 	return currentVal;
 } 
-*/
-
-// TESTS //
-
-/* // Many solutions (46 solutions to be precise)
-const testBoard1 = [
-	[5, 0, 0, 0, 7, 0, 0, 0, 0],
-	[6, 0, 0, 1, 9, 5, 0, 0, 0],
-	[0, 9, 8, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 3],
-	[4, 0, 0, 8, 0, 3, 0, 0, 1],
-	[7, 0, 0, 0, 2, 0, 0, 0, 0],
-	[0, 6, 0, 0, 0, 0, 2, 8, 0],
-	[0, 0, 0, 4, 1, 9, 0, 0, 5],
-	[0, 0, 0, 0, 8, 0, 0, 7, 9],
-];
-// One solution
-const testBoard2 = [
-	[5, 3, 0, 0, 7, 0, 0, 0, 0],
-	[6, 0, 0, 1, 9, 5, 0, 0, 0],
-	[0, 9, 8, 0, 0, 0, 0, 6, 0],
-	[8, 0, 0, 0, 6, 0, 0, 0, 3],
-	[4, 0, 0, 8, 0, 3, 0, 0, 1],
-	[7, 0, 0, 0, 2, 0, 0, 0, 6],
-	[0, 6, 0, 0, 0, 0, 2, 8, 0],
-	[0, 0, 0, 4, 1, 9, 0, 0, 5],
-	[0, 0, 0, 0, 8, 0, 0, 7, 9],
-];
-// Invalid board
-const testBoard3 = [
-	[1, 2, 3, 4, 5, 6, 7, 8, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 2],
-	[0, 0, 0, 0, 0, 0, 0, 0, 3],
-	[0, 0, 0, 0, 0, 0, 0, 0, 4],
-	[0, 0, 0, 0, 0, 0, 0, 0, 5],
-	[0, 0, 0, 0, 0, 0, 0, 0, 6],
-	[0, 0, 0, 0, 0, 0, 0, 0, 7],
-	[0, 0, 0, 0, 0, 0, 0, 0, 8],
-	[0, 0, 0, 0, 0, 0, 0, 0, 9],
-]; 
-
-const currentBoard = [
-		[4, 0, 0, 0, 3, 6, 7, 8, 9],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0]
-	],
 */
