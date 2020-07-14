@@ -36,7 +36,7 @@ function create(limit, storingIntervall) {
 }
 
 function storeResult(i) {
-	console.log(i / amount * 100, '%');
+	console.log(i);
 	const data = { currentBoard: board, sudokus: validSudokus };
 	fs.writeFileSync(filePath, JSON.stringify(data), { encoding: 'utf-8' });
 }
@@ -144,14 +144,6 @@ function calcBoxStartingVal(value) {
 	return value;
 }
 
-// Execute Code //
-const startDate = Date.now();
-create(amount, storingIntervall);
-const timeDiff = Date.now() - startDate;
-console.log(`${timeDiff}ms \n${timeDiff / 6000}min \n${timeDiff / 360000}h`);
-if (validSudokus.length != 0) console.log(`Found ${validSudokus.length} valid sudokus`);
-
-/*
 function getCurrentValue() {
 	let currentVal = 0;
 	for (let i = 0; i < 81; i++) {
@@ -160,5 +152,12 @@ function getCurrentValue() {
 		currentVal += board[row][square] * Math.pow(10, i);
 	}
 	return currentVal;
-} 
-*/
+}
+
+// Execute Code //
+const startDate = Date.now();
+create(amount, storingIntervall);
+const timeDiff = Date.now() - startDate;
+console.log(`${timeDiff}ms \n${timeDiff / 6000}min \n${timeDiff / 360000}h`);
+if (validSudokus.length != 0) console.log(`Found ${validSudokus.length} valid sudokus`);
+console.log(`${(getCurrentValue() / Math.pow(10, 81)) * 100}% done completely`);
