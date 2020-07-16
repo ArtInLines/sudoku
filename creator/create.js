@@ -31,7 +31,7 @@ function create(limit, storingIntervall) {
 			continue;
 		}
 	}
-	storeResult('\nDone');
+	storeResult('\nDone:');
 	return null;
 }
 
@@ -144,7 +144,7 @@ function calcBoxStartingVal(value) {
 	return value;
 }
 
-function getCurrentValue() {
+/* function getCurrentValue() {
 	let currentVal = 0;
 	for (let i = 0; i < 81; i++) {
 		const row = Math.floor(i / 9);
@@ -152,12 +152,12 @@ function getCurrentValue() {
 		currentVal += board[row][square] * Math.pow(10, i);
 	}
 	return currentVal;
-}
+} */
 
 // Execute Code //
 const startDate = Date.now();
 create(amount, storingIntervall);
+console.log(board);
 const timeDiff = Date.now() - startDate;
-console.log(`${timeDiff}ms \n${timeDiff / 6000}min \n${timeDiff / 360000}h`);
+console.log(`${timeDiff}ms \n${Math.round(timeDiff / 60000)}min \n${Math.round(timeDiff / 3600000)}h`);
 if (validSudokus.length != 0) console.log(`Found ${validSudokus.length} valid sudokus`);
-console.log(`${(getCurrentValue() / Math.pow(10, 81)) * 100}% done completely`);
