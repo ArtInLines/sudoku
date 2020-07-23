@@ -1,7 +1,7 @@
 // Changeable constants
 const amount = 100000000;
 const storingIntervall = 10000;
-const filePath = './board.json';
+const filePath = './board2.json';
 const emptySquaresMin = 10;
 
 // Modules
