@@ -25,10 +25,11 @@
 	font-size: 5vw;
 	border: none;
 	color: #aaa;
+	background-color: #222;
 }
 
 .sudoku-square[disabled] {
-	background-color: #222;
+	background-color: #555;
 }
 
 .bottom-border {
