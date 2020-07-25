@@ -33,8 +33,10 @@ const sudokuModel = require('./models/sudoku');
 ///
 // Socket.io
 ///
+let playerAmount = 0;
 io.on('connection', (socket) => {
-	console.log(`A user connected`.data);
+	playerAmount++;
+	if (playerAmount > 1) emitPlayerAmount();
 
 	socket.on('sudoku-change', (data) => {
 		console.log(data);
@@ -56,9 +58,15 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('disconnect', () => {
-		console.log(`A user disconnected`.data);
+		playerAmount--;
+		emitPlayerAmount();
 	});
 });
+
+function emitPlayerAmount() {
+	console.log(`playerAmount: ${playerAmount}`.log);
+	io.emit('player-amount', playerAmount);
+}
 
 async function dbSudokuSolved(id) {
 	const sudoku = await sudokuModel.findById(id);

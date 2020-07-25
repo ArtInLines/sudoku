@@ -2,9 +2,15 @@
 
 const root = document.querySelector('#root');
 const solveBtn = document.querySelector('#solveBtn');
+const playerAmountEl = document.querySelector('.player-amount');
 let sudoku, sudokuId;
 import solve from './solve.js';
 const socket = io();
+
+socket.on('player-amount', (amount) => {
+	if (amount < 2) return (playerAmountEl.innerHTML = '');
+	playerAmountEl.innerHTML = `There are currently ${amount} players`;
+});
 
 socket.on('sudoku-change', (data) => {
 	const element = document.getElementById(data.id);
@@ -54,7 +60,7 @@ function changeSudoku(element) {
 	socket.emit('sudoku-change', { id: element.id, val: element.value });
 }
 
-function showSudoku(board) {
+function buildSudoku(board) {
 	const parent = document.createElement('table');
 	parent.classList.add('sudoku-board');
 	for (let i = 0; i < 9; i++) {
@@ -62,8 +68,10 @@ function showSudoku(board) {
 		row.classList.add('sudoku-row');
 		for (let j = 0; j < 9; j++) {
 			const square = document.createElement('td');
-			square.innerHTML = `<input type="text" class="sudoku-square" id="sudoku-square-${i}-${j}" min="1" max="9" step="1" ${board[i][j] != 0 ? 'value="' + board[i][j] + '" disabled' : ''}>`;
 			square.classList.add('sudoku-square-container');
+			if ((i + 1) % 3 == 0 && i != 8) square.classList.add('bottom-border');
+			if ((j + 1) % 3 == 0 && j != 8) square.classList.add('side-border');
+			square.innerHTML = `<input type="text" class="sudoku-square" id="sudoku-square-${i}-${j}" min="1" max="9" step="1" ${board[i][j] != 0 ? 'value="' + board[i][j] + '" disabled' : ''}>`;
 			row.insertAdjacentElement('beforeend', square);
 		}
 		parent.insertAdjacentElement('beforeend', row);
@@ -77,8 +85,8 @@ fetch('/sudoku')
 		if (!data.success) return; // TODO: Error Handling
 		sudoku = data.data.sudoku;
 		sudokuId = data.data._id;
-		console.log(sudoku);
-		const board = showSudoku(sudoku);
+		console.table(sudoku);
+		const board = buildSudoku(sudoku);
 		root.insertAdjacentElement('beforeend', board);
 	});
 

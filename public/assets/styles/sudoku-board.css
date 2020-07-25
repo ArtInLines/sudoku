@@ -2,14 +2,13 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-direction: column;
 }
 
 .sudoku-board {
 	border-spacing: 0;
-	border: 1px solid #555;
-}
-
-.sudoku-row {
+	border: 3px solid #000;
+	border-collapse: collapse;
 }
 
 .sudoku-square-container {
@@ -20,9 +19,9 @@
 .sudoku-square {
 	text-align: center;
 	width: 10vw;
-	max-width: 9vh;
+	max-width: 8vh;
 	height: 10vw;
-	max-height: 9vh;
+	max-height: 8vh;
 	font-size: 5vw;
 	border: none;
 	color: #555;
@@ -30,5 +29,12 @@
 
 .sudoku-square[disabled] {
 	background-color: #ddd;
-	border-color: #ddd;
+}
+
+.bottom-border {
+	border-bottom: 3px solid #000;
+}
+
+.side-border {
+	border-right: 3px solid #000;
 }

@@ -24,11 +24,12 @@ body,
 	border: 2px solid #555;
 	border-radius: 15px;
 	padding: 0.6rem;
+	margin: 1.5rem;
 }
 
-#solveBtn {
+/* #solveBtn {
 	position: absolute;
 	top: 2vh;
 	left: 50%;
 	transform: translate(-50%);
-}
+} */
