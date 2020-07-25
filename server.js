@@ -12,14 +12,6 @@ const http = require('http');
 const server = http.createServer(app);
 const io = require('socket.io')(server);
 
-io.on('connection', (socket) => {
-	console.log(`A user connected`.log);
-
-	socket.on('disconnect', () => {
-		console.log(`A user disconnected`.log);
-	});
-});
-
 // Constand variables
 const PORT = process.env.PORT;
 const NODE_ENV = process.env.NODE_ENV;
@@ -38,6 +30,42 @@ const connectDB = require('./config/connectDB');
 connectDB();
 const sudokuModel = require('./models/sudoku');
 
+///
+// Socket.io
+///
+io.on('connection', (socket) => {
+	console.log(`A user connected`.data);
+
+	socket.on('sudoku-change', (data) => {
+		console.log(data);
+		socket.broadcast.emit('sudoku-change', data);
+	});
+
+	socket.on('sudoku-focus', (data) => {
+		console.log(data);
+		socket.broadcast.emit('sudoku-focus', data);
+	});
+
+	socket.on('sudoku-solved', (data) => {
+		if (data.bool) {
+			dbSudokuSolved(data.id);
+			socket.broadcast.emit('sudoku-solved', true);
+		} else {
+			socket.broadcast.emit('sudoku-solved', false);
+		}
+	});
+
+	socket.on('disconnect', () => {
+		console.log(`A user disconnected`.data);
+	});
+});
+
+async function dbSudokuSolved(id) {
+	const sudoku = await sudokuModel.findById(id);
+	sudoku.solved = true;
+	sudoku.save();
+}
+
 app.get('/', (req, res) => {
 	res.sendFile(`${publicPath}/index.html`);
 })
@@ -45,6 +73,17 @@ app.get('/', (req, res) => {
 		// Send back json data with new sudokus, to create endless scrolling on client side
 		const allSudokus = await sudokuModel.find();
 		res.status(200).json({ success: true, data: allSudokus });
+	})
+	.get('/sudoku', async (req, res) => {
+		const allSudokus = await sudokuModel.find();
+		let sudoku;
+		for (let i = 0; i < allSudokus.length; i++) {
+			if (!allSudokus[i].solved) {
+				sudoku = allSudokus[i];
+				break;
+			}
+		}
+		res.status(201).json({ success: true, data: sudoku });
 	})
 	.get('/create', async (req, res) => {
 		// Create new sudokuModel in DB with all values set to empty

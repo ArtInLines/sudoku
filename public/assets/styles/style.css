@@ -12,4 +12,23 @@ body,
 	margin: 0;
 	padding: 0;
 	height: 100%;
+	position: relative;
+}
+
+.btn {
+	font-size: 1rem;
+	cursor: pointer;
+	background-color: #333;
+	outline: none;
+	color: #fff;
+	border: 2px solid #555;
+	border-radius: 15px;
+	padding: 0.6rem;
+}
+
+#solveBtn {
+	position: absolute;
+	top: 2vh;
+	left: 50%;
+	transform: translate(-50%);
 }

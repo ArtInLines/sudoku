@@ -20,9 +20,9 @@
 .sudoku-square {
 	text-align: center;
 	width: 10vw;
-	max-width: 10vh;
+	max-width: 9vh;
 	height: 10vw;
-	max-height: 10vh;
+	max-height: 9vh;
 	font-size: 5vw;
 	border: none;
 	color: #555;
