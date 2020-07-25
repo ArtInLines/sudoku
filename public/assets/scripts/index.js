@@ -17,7 +17,6 @@ socket.on('sudoku-focus', (data) => {
 	if (data.focus) {
 		parent.style.borderColor = 'red';
 	} else {
-		console.log('test');
 		parent.style.borderColor = '#555';
 	}
 });
@@ -28,15 +27,15 @@ socket.on('sudoku-solved', (bool) => {
 });
 
 document.addEventListener('keyup', (e) => {
-	if (e.target.className == 'sudoku-square') changeSudoku(e.target);
+	if (e.target.classList.contains('sudoku-square')) changeSudoku(e.target);
 });
 
 document.addEventListener('focusin', (e) => {
-	if (e.target.className == 'sudoku-square') changeFocus(e, true);
+	if (e.target.classList.contains('sudoku-square')) changeFocus(e, true);
 });
 
 document.addEventListener('focusout', (e) => {
-	if (e.target.className == 'sudoku-square') changeFocus(e, false);
+	if (e.target.classList.contains('sudoku-square')) changeFocus(e, false);
 });
 
 function changeFocus(e, bool) {
@@ -45,13 +44,12 @@ function changeFocus(e, bool) {
 
 function changeSudoku(element) {
 	const regEx = /[0-9]/;
-	if (!regEx.test(element.value)) {
-		element.value = '';
-		return false;
-	}
 	if (element.value.length > 1) {
 		element.value = element.value.split('').shift();
 		return false;
+	}
+	if (!regEx.test(element.value)) {
+		element.value = '';
 	}
 	socket.emit('sudoku-change', { id: element.id, val: element.value });
 }
