@@ -7,12 +7,12 @@
 
 .sudoku-board {
 	border-spacing: 0;
-	border: 3px solid #000;
+	border: 3px solid #ddd;
 	border-collapse: collapse;
 }
 
 .sudoku-square-container {
-	border: 1px solid #555;
+	border: 1px solid #aaa;
 	padding: 0;
 }
 
@@ -24,17 +24,17 @@
 	max-height: 8vh;
 	font-size: 5vw;
 	border: none;
-	color: #555;
+	color: #aaa;
 }
 
 .sudoku-square[disabled] {
-	background-color: #ddd;
+	background-color: #222;
 }
 
 .bottom-border {
-	border-bottom: 3px solid #000;
+	border-bottom: 3px solid #ddd;
 }
 
 .side-border {
-	border-right: 3px solid #000;
+	border-right: 3px solid #ddd;
 }

@@ -13,15 +13,16 @@ body,
 	padding: 0;
 	height: 100%;
 	position: relative;
+	background-color: #333;
 }
 
 .btn {
 	font-size: 1rem;
 	cursor: pointer;
-	background-color: #333;
+	background-color: #aaa;
 	outline: none;
-	color: #fff;
-	border: 2px solid #555;
+	color: #000;
+	border: 2px solid #aaa;
 	border-radius: 15px;
 	padding: 0.6rem;
 	margin: 1.5rem;
