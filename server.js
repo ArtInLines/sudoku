@@ -1,6 +1,6 @@
 require('colors').setTheme({
-	data: ['gray', 'italic', 'dim'],
-	log: ['green', 'italic'],
+	log: ['gray', 'italic', 'dim'],
+	data: ['green', 'italic'],
 	success: ['cyan', 'italic'],
 	warn: ['yellow', 'bold'],
 	error: ['red', 'italic', 'underline'],
@@ -8,6 +8,17 @@ require('colors').setTheme({
 require('dotenv').config({ path: `${__dirname}/config/config.env` });
 const express = require('express');
 const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const io = require('socket.io')(server);
+
+io.on('connection', (socket) => {
+	console.log(`A user connected`.log);
+
+	socket.on('disconnect', () => {
+		console.log(`A user disconnected`.log);
+	});
+});
 
 // Constand variables
 const PORT = process.env.PORT;
@@ -58,7 +69,7 @@ app.get('/', (req, res) => {
 	})
 	.get('/:sudokuId', async (req, res) => {
 		// Send file, that doesn't allow you to edit the sudoku
-		res.sendFile(`${publicPath}/play.html`);
+		res.sendFile(`${publicPath}/index.html`);
 	})
 	.get('/:sudokuId/edit', async (req, res) => {
 		// Send file, that allows to edit the sudoku
@@ -73,4 +84,4 @@ app.get('/', (req, res) => {
 		res.status(201).json({ success: true, data: sudoku });
 	});
 
-app.listen(PORT, console.log(`Server listening on port ${PORT} in ${NODE_ENV} mode...`.success));
+server.listen(PORT, console.log(`Server listening on port ${PORT} in ${NODE_ENV} mode...`.success));

@@ -1,0 +1,34 @@
+#root {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.sudoku-board {
+	border-spacing: 0;
+	border: 1px solid #555;
+}
+
+.sudoku-row {
+}
+
+.sudoku-square-container {
+	border: 1px solid #555;
+	padding: 0;
+}
+
+.sudoku-square {
+	text-align: center;
+	width: 10vw;
+	max-width: 10vh;
+	height: 10vw;
+	max-height: 10vh;
+	font-size: 5vw;
+	border: none;
+	color: #555;
+}
+
+.sudoku-square[disabled] {
+	background-color: #ddd;
+	border-color: #ddd;
+}
