@@ -7,11 +7,14 @@ colors.setTheme({
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
-	const conn = await mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@sudoku.gyqjc.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`, {
-		useUnifiedTopology: true,
-		useNewUrlParser: true,
-		useFindAndModify: false,
-	});
+	const conn = await mongoose.connect(
+		`mongodb+srv://sudokuDB:o6hDM0kO5YMY@sudoku.gyqjc.mongodb.net/sudoku?authSource=admin&replicaSet=atlas-pp8i7n-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true`,
+		{
+			useUnifiedTopology: true,
+			useNewUrlParser: true,
+			useFindAndModify: false,
+		},
+	);
 
 	console.log(`MongoDB connected: ${conn.connection.host}`.success);
 };
