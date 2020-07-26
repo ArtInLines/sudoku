@@ -98,7 +98,9 @@ function buildSudoku(board) {
 			square.classList.add('sudoku-square-container');
 			if ((i + 1) % 3 == 0 && i != 8) square.classList.add('bottom-border');
 			if ((j + 1) % 3 == 0 && j != 8) square.classList.add('side-border');
-			square.innerHTML = `<input type="text" class="sudoku-square" id="sudoku-square-${i}-${j}" min="1" max="9" step="1" ${board[i][j] != 0 ? 'value="' + board[i][j] + '" disabled' : ''}>`;
+			square.innerHTML = `<input type="text" class="sudoku-square" id="sudoku-square-${i}-${j}" min="1" max="9" step="1" ${
+				board[i][j] != 0 ? 'value="' + board[i][j] + '" readonly="readonly"' : ''
+			}>`;
 			row.insertAdjacentElement('beforeend', square);
 		}
 		parent.insertAdjacentElement('beforeend', row);

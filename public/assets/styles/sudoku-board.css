@@ -45,7 +45,7 @@
 	font-size: 0.8vh;
 }
 
-.sudoku-square[disabled] {
+.sudoku-square:read-only {
 	background-color: #555;
 }
 
