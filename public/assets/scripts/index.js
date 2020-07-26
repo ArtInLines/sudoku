@@ -1,5 +1,3 @@
-// Get sudokus from DB via post("/sudokus")
-
 const root = document.querySelector('#root');
 const solveBtn = document.querySelector('#solveBtn');
 const playerAmountEl = document.querySelector('.player-amount');
@@ -15,15 +13,18 @@ socket.on('player-amount', (amount) => {
 socket.on('sudoku-change', (data) => {
 	const element = document.getElementById(data.id);
 	element.value = data.val;
+	changeClass(element.value, element);
 });
 
 socket.on('sudoku-focus', (data) => {
 	const element = document.getElementById(data.id);
 	const parent = element.parentNode;
 	if (data.focus) {
-		parent.style.borderColor = 'red';
+		const focusedEl = document.createElement('div');
+		focusedEl.classList.add('focusedEl');
+		parent.insertAdjacentElement('beforeend', focusedEl);
 	} else {
-		parent.style.borderColor = '#555';
+		parent.lastChild.remove();
 	}
 });
 
@@ -50,14 +51,40 @@ function changeFocus(e, bool) {
 
 function changeSudoku(element) {
 	const regEx = /[0-9]/;
-	if (element.value.length > 1) {
-		element.value = element.value.split('').shift();
-		return false;
+	let arr = element.value.split('');
+	element.value = '';
+	if (regEx.test(arr[arr.length - 1])) {
+		if (arr.length > 1) {
+			if (arr[arr.length - 1] != ',') {
+				arr.splice(-1, 0, ',');
+			} else {
+				arr.pop();
+			}
+		}
+	} else {
+		arr.pop();
 	}
-	if (!regEx.test(element.value)) {
-		element.value = '';
+	changeClass(arr, element);
+	for (let i = 0; i < arr.length; i++) {
+		element.value += `${arr[i]}`;
 	}
 	socket.emit('sudoku-change', { id: element.id, val: element.value });
+}
+
+function changeClass(arr, element) {
+	if (arr.length > 15) element.classList.add('smallest');
+	else if (arr.length > 10) {
+		element.classList.remove('smallest');
+		element.classList.add('smaller');
+	} else if (arr.length > 5) {
+		element.classList.remove('smaller');
+		element.classList.add('small');
+	} else if (arr.length > 1) {
+		element.classList.remove('small');
+		element.classList.add('notes');
+	} else {
+		element.classList.remove('notes');
+	}
 }
 
 function buildSudoku(board) {
