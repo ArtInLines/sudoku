@@ -1,9 +1,23 @@
 const root = document.querySelector('#root');
 const solveBtn = document.querySelector('#solveBtn');
 const playerAmountEl = document.querySelector('.player-amount');
+const nextBtn = document.getElementById('next');
+const prevBtn = document.getElementById('prev');
 let sudoku, sudokuId;
 import solve from './solve.js';
 const socket = io();
+
+socket.on('connect', () => {
+	console.log('Socket connected');
+});
+
+socket.on('next-sudoku', (board) => {
+	const oldBoard = document.querySelector('.sudoku-board');
+	oldBoard.remove();
+	console.table(board);
+	const newBoard = buildSudoku(board);
+	root.insertAdjacentElement('beforeend', newBoard);
+});
 
 socket.on('player-amount', (amount) => {
 	if (amount < 2) return (playerAmountEl.innerHTML = '');
@@ -34,6 +48,7 @@ socket.on('sudoku-solved', (bool) => {
 });
 
 document.addEventListener('keyup', (e) => {
+	if (e.keyCode >= 37 && e.keyCode <= 40) return;
 	if (e.target.classList.contains('sudoku-square')) changeSudoku(e.target);
 });
 
@@ -45,8 +60,21 @@ document.addEventListener('focusout', (e) => {
 	if (e.target.classList.contains('sudoku-square')) changeFocus(e, false);
 });
 
+document.addEventListener('click', (e) => {
+	if (e.target == nextBtn) nextSudoku(1);
+	else if (e.target == nextBtn) nextSudoku(-1);
+});
+
+/* nextBtn.addEventListener('click', nextSudoku(1));
+prevBtn.addEventListener('click', nextSudoku(-1)); */
+
 function changeFocus(e, bool) {
 	socket.emit('sudoku-focus', { id: e.target.id, focus: bool });
+}
+
+function nextSudoku(num) {
+	console.warn('Next Sudoku');
+	socket.emit('next-sudoku', num);
 }
 
 function changeSudoku(element) {

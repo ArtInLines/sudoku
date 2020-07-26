@@ -1,6 +1,7 @@
-require('colors').setTheme({
-	log: ['gray', 'italic', 'dim'],
+const colors = require('colors');
+colors.setTheme({
 	data: ['green', 'italic'],
+	log: ['gray', 'italic', 'dim'],
 	success: ['cyan', 'italic'],
 	warn: ['yellow', 'bold'],
 	error: ['red', 'italic', 'underline'],
@@ -33,18 +34,29 @@ const sudokuModel = require('./models/sudoku');
 ///
 // Socket.io
 ///
-let playerAmount = 0;
+let playerAmount = 0,
+	sudokuNum = 0,
+	allSudokus;
 io.on('connection', (socket) => {
+	socket.emit('connect');
 	playerAmount++;
 	if (playerAmount > 1) emitPlayerAmount();
 
+	socket.on('next-sudoku', (num) => {
+		console.log(`Next sudoku`.warn);
+		sudokuNum += num;
+		if (sudokuNum == -1) sudokuNum = 0;
+		console.log({ sudokuNum });
+		getSudoku(sudokuNum, 1, true).then((obj) => {
+			io.emit('next-sudoku', obj.sudoku);
+		});
+	});
+
 	socket.on('sudoku-change', (data) => {
-		console.log(data);
 		socket.broadcast.emit('sudoku-change', data);
 	});
 
 	socket.on('sudoku-focus', (data) => {
-		console.log(data);
 		socket.broadcast.emit('sudoku-focus', data);
 	});
 
@@ -64,7 +76,6 @@ io.on('connection', (socket) => {
 });
 
 function emitPlayerAmount() {
-	console.log(`playerAmount: ${playerAmount}`.log);
 	io.emit('player-amount', playerAmount);
 }
 
@@ -72,6 +83,25 @@ async function dbSudokuSolved(id) {
 	const sudoku = await sudokuModel.findById(id);
 	sudoku.solved = true;
 	sudoku.save();
+}
+
+async function getSudoku(start = 0, amount = 1, solved = false) {
+	let sudokus = [];
+	for (let i = start, j = 0; j < amount; i++, j++) {
+		console.log({ i, j });
+		if (solved) {
+			sudokus.push(allSudokus[i]);
+			continue;
+		}
+		if (!allSudokus[i].solved) {
+			sudokus.push(allSudokus[i]);
+			continue;
+		}
+		j--;
+	}
+	console.log(`${sudokus.length} sudokus sent...`.gray.italic.dim);
+	if (amount == 1) return sudokus[0];
+	return sudokus;
 }
 
 app.get('/', (req, res) => {
@@ -83,14 +113,8 @@ app.get('/', (req, res) => {
 		res.status(200).json({ success: true, data: allSudokus });
 	})
 	.get('/sudoku', async (req, res) => {
-		const allSudokus = await sudokuModel.find();
-		let sudoku;
-		for (let i = 0; i < allSudokus.length; i++) {
-			if (!allSudokus[i].solved) {
-				sudoku = allSudokus[i];
-				break;
-			}
-		}
+		const sudoku = await getSudoku(sudokuNum, 1, false);
+		console.log(`Sending sudoku...`.warn);
 		res.status(201).json({ success: true, data: sudoku });
 	})
 	.get('/create', async (req, res) => {
@@ -132,3 +156,10 @@ app.get('/', (req, res) => {
 	});
 
 server.listen(PORT, console.log(`Server listening on port ${PORT} in ${NODE_ENV} mode...`.success));
+getAllSudokus();
+
+async function getAllSudokus() {
+	console.log('Getting sudokus...'.gray.italic.dim);
+	allSudokus = await sudokuModel.find();
+	console.log(`${allSudokus.length} sudokus found and ready for access...`.success);
+}

@@ -16,6 +16,19 @@ body,
 	background-color: #222;
 }
 
+.player-amount {
+	color: #ccc;
+	font-size: 1rem;
+}
+
+.btnContainer {
+	width: 100%;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
 .btn {
 	font-size: 1rem;
 	cursor: pointer;
@@ -28,9 +41,23 @@ body,
 	margin: 1.5rem;
 }
 
-.player-amount {
-	color: #ccc;
-	font-size: 1rem;
+.nextBtn {
+	text-decoration: none;
+	font-size: 1.2rem;
+	outline: none;
+	cursor: pointer;
+	display: inline-block;
+	padding: 10px 16px;
+	background-color: #ccc;
+	color: #333;
+	border-radius: 50%;
+	border: none;
+	margin: 0 1rem;
+}
+
+.nextBtn:hover {
+	background-color: #fff;
+	color: #555;
 }
 
 /* #solveBtn {
