@@ -9,11 +9,11 @@ const empty = 0;
 let solutions = [];
 
 function main(board) {
-	console.log('Solving...');
+	// console.log('Solving...');
 	solve(board);
-	console.log('solved');
+	// console.log('solved');
 	const results = solutions;
-	console.log('Results:', results.length);
+	// console.log('Results:', results.length);
 	solutions = [];
 	return results;
 }
@@ -22,7 +22,7 @@ function solve(board) {
 	// console.log('solve:', board);
 	if (solved(board)) {
 		solutions.push(board);
-		console.log('Board solved!\n', solutions);
+		// console.log('Board solved!\n', solutions);
 	}
 	const possibilities = nextBoards(board);
 	const validBoards = keepOnlyValid(possibilities);

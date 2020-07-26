@@ -123,14 +123,26 @@ solveBtn.addEventListener('click', checkSol);
 
 function checkSol() {
 	const solutions = solve(sudoku);
+	console.table(solutions[0]);
 	const userSol = getSol();
+	console.table(userSol);
 	for (let i = 0; i < solutions.length; i++) {
-		if (solutions[i] == userSol) {
+		if (compareSudokus(solutions[i], userSol)) {
 			solTrue();
-			return;
+			return true;
 		}
 	}
 	solFalse();
+	return false;
+}
+
+function compareSudokus(arr, arr2) {
+	for (let i = 0, len = arr.length; i < len; i++) {
+		for (let j = 0, jen = arr[i].length; j < jen; j++) {
+			if (arr[i][j] != arr2[i][j]) return false;
+		}
+	}
+	return true;
 }
 
 function getSol() {
@@ -141,8 +153,9 @@ function getSol() {
 		let arr = [];
 		const squares = rows[i].childNodes;
 		for (let j = 0; j < squares.length; j++) {
-			const square = squares[i].firstChild;
-			arr.push(square.value);
+			const square = squares[j].firstChild;
+			if (square.value == '') arr.push(0);
+			else arr.push(Number(square.value));
 		}
 		sol.push(arr);
 	}
@@ -152,8 +165,8 @@ function getSol() {
 function solTrue() {
 	solTrueDOM();
 	socket.emit('sudoku-solved', { bool: true, id: sudokuId });
+	console.log(true);
 }
-
 function solFalse() {
 	solFalseDOM();
 	socket.emit('sudoku-solved', { bool: false, id: sudokuId });
