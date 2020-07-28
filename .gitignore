@@ -5,3 +5,4 @@ Creator/
 *.pxm
 .DS_Store
 storeSudokus.js
+board.json
