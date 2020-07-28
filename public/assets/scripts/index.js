@@ -17,6 +17,7 @@ socket.on('next-sudoku', (board) => {
 	console.table(board);
 	const newBoard = buildSudoku(board);
 	root.insertAdjacentElement('beforeend', newBoard);
+	sudoku = board;
 });
 
 socket.on('player-amount', (amount) => {
@@ -62,7 +63,7 @@ document.addEventListener('focusout', (e) => {
 
 document.addEventListener('click', (e) => {
 	if (e.target == nextBtn) nextSudoku(1);
-	else if (e.target == nextBtn) nextSudoku(-1);
+	else if (e.target == prevBtn) nextSudoku(-1);
 });
 
 /* nextBtn.addEventListener('click', nextSudoku(1));
